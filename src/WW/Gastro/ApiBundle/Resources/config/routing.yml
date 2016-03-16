@@ -31,6 +31,7 @@ place:
     resource: WW\Gastro\ApiBundle\Controller\PlaceController
     name_prefix:  ge_api_
 
-
-
-
+# Api Doc
+NelmioApiDocBundle:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /api/doc
