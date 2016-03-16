@@ -34,7 +34,7 @@
     "friendsofsymfony/user-bundle": "1.3.5",
     "nelmio/api-doc-bundle": "^2.11",
     "jms/security-extra-bundle": "1.5.*",
-    "jms/di-extra-bundle": "1.5.*",
+    "jms/di-extra-bundle": "1.*",
     "qandidate/symfony-json-request-transformer": "1.*",
     "knplabs/knp-snappy-bundle": "^1.2",
     "jms/serializer-bundle": "^1.1"
