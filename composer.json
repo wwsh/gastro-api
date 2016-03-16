@@ -27,7 +27,7 @@
     "doctrine/mongodb-odm": "1.0.*@dev",
     "doctrine/mongodb-odm-bundle": "3.0.*@dev",
     "twig/extensions": "~1.2",
-    "sensio/distribution-bundle": "3.*",
+    "sensio/distribution-bundle": "*",
     "sensio/framework-extra-bundle": "3.*",
     "incenteev/composer-parameter-handler": "~2.1",
     "friendsofsymfony/rest-bundle": "1.7.7",
