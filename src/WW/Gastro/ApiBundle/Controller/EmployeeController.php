@@ -1,11 +1,11 @@
 <?php
 
-namespace WW\Gastro\ApiBundle\Controller;
+namespace Gastro\ApiBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
-use WW\Gastro\ApiBundle\Entity\Employee;
-use WW\Gastro\ApiBundle\Service\Controls;
-use WW\Gastro\ApiBundle\Service\EmployeeService;
+use Gastro\ApiBundle\Entity\Employee;
+use Gastro\ApiBundle\Service\Controls;
+use Gastro\ApiBundle\Service\EmployeeService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use FOS\RestBundle\Controller\Annotations\View;
@@ -109,7 +109,7 @@ class EmployeeController extends FOSRestController
      *     }
      * )
      */
-    public function putEmployeeLoginAction($employeeId)
+    public function postEmployeeLoginAction($employeeId)
     {
         $employee = $this->getEmployeeAction($employeeId);
 
@@ -149,7 +149,7 @@ class EmployeeController extends FOSRestController
      *     }
      * )
      */
-    public function putEmployeeLogoutAction($employeeId)
+    public function postEmployeeLogoutAction($employeeId)
     {
         $employee = $this->getEmployeeAction($employeeId);
 
@@ -172,7 +172,7 @@ class EmployeeController extends FOSRestController
      * @return \FOS\RestBundle\View\View
      * @ApiDoc(
      *  resource=true,
-     *  description="Identifying Employee by PIN code, stored in database",
+     *  description="Search Employee by pincode",
      *  requirements={
      *      {
      *          "name"="pincode",
@@ -181,22 +181,23 @@ class EmployeeController extends FOSRestController
      *          "description"="PIN code value"
      *      }
      *  },
+     *      output="WW\Gastro\ApiBundle\Entity\Employee",
      *     statusCodes={
      *         200="Returned when Employee found",
      *         400="Returned if Employee not found"
      *     }
      * )
      */
-    public function postEmployeePincodeAction(Request $request)
+    public function getEmployeePincodeAction(Request $request)
     {
-        $data = $request->request->all();
+        $pincode = $request->query->get('pincode');
 
-        if (isset($data['pincode'])) {
+        if ($pincode) {
 
             $employee = $this
                 ->getDoctrine()
                 ->getRepository('ApiBundle:Employee')
-                ->findBy(['pincode' => $data['pincode']]);
+                ->findBy(['pincode' => $pincode]);
 
             if (!empty($employee)) {
                 return $this->view($employee);
