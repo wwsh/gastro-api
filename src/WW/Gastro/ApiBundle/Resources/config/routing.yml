@@ -20,6 +20,12 @@ bill:
     parent:   employee
     name_prefix:  ge_api_
 
+billorder:
+    type:     rest
+    resource: WW\Gastro\ApiBundle\Controller\BillOrderController
+    parent:   bill
+    name_prefix:  ge_api_
+
 place:
     type:     rest
     resource: WW\Gastro\ApiBundle\Controller\PlaceController

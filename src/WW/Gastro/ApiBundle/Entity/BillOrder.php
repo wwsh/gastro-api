@@ -78,6 +78,19 @@ class BillOrder
      */
     public function setStatus($status)
     {
+        $allowed = [
+            OrderStatusType::CANCELLED,
+            OrderStatusType::COMPLETE,
+            OrderStatusType::READY,
+            OrderStatusType::REQUESTED,
+            OrderStatusType::PROCESSED,
+            OrderStatusType::STORNED,
+        ];
+
+        if (!in_array($status, $allowed)) {
+            throw new \RuntimeException('Tried to set unallowed status: ' . $status);
+        }
+        
         $this->status = $status;
 
         return $this;

@@ -1,3 +1,0 @@
-mefi_api_get_worktimes:
-    path:     /{userId}/worktime
-    defaults: { _controller: ApiBundle:WorkTime:getWorktimes }

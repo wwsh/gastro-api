@@ -51,6 +51,12 @@ class CommonEntityService implements CommonEntityServiceInterface
      */
     protected $manager;
 
+    /**
+     * Each operation can be performed in context of another entity, if needed.
+     *
+     * @var
+     */
+    protected $contextEntity;
 
     /**
      * EmployeeService constructor.
@@ -59,6 +65,16 @@ class CommonEntityService implements CommonEntityServiceInterface
     public function __construct($manager)
     {
         $this->manager = $manager;
+    }
+
+    /**
+     * @param mixed $contextEntity
+     * @return $this
+     */
+    public function setContext($contextEntity)
+    {
+        $this->contextEntity = $contextEntity;
+        return $this;
     }
 
     /**

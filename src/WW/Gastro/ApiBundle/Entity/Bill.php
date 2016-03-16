@@ -120,6 +120,17 @@ class Bill
      */
     public function setStatus($status)
     {
+        $allowed = [
+           BillStatusType::OPEN,
+           BillStatusType::PAID,
+           BillStatusType::STORNED,
+           BillStatusType::CANCELLED
+        ];
+
+        if (!in_array($status, $allowed)) {
+            throw new \RuntimeException('Tried to set unallowed status: ' . $status);
+        }
+
         $this->status = $status;
 
         return $this;

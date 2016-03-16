@@ -48,7 +48,7 @@ class EmployeeController extends FOSRestController
      *      {
      *          "name"="employeeId",
      *          "dataType"="integer",
-     *          "requirement"="Integer",
+     *          "requirement"="true",
      *          "description"="Employee ID"
      *      }
      *  },
@@ -97,7 +97,7 @@ class EmployeeController extends FOSRestController
      *      {
      *          "name"="employeeId",
      *          "dataType"="integer",
-     *          "requirement"="Integer",
+     *          "requirement"="true",
      *          "description"="Employee ID to be registered as working"
      *      }
      *  },
@@ -140,7 +140,7 @@ class EmployeeController extends FOSRestController
      *      {
      *          "name"="employeeId",
      *          "dataType"="integer",
-     *          "requirement"="Integer",
+     *          "requirement"="true",
      *          "description"="ID of Employee to stop working shift"
      *      }
      *  },
@@ -182,7 +182,7 @@ class EmployeeController extends FOSRestController
      *      {
      *          "name"="pincode",
      *          "dataType"="integer",
-     *          "requirement"="Integer",
+     *          "requirement"="true",
      *          "description"="PIN code value"
      *      }
      *  },
@@ -222,7 +222,7 @@ class EmployeeController extends FOSRestController
      *      {
      *          "name"="id",
      *          "dataType"="integer",
-     *          "requirement"="Integer",
+     *          "requirement"="true",
      *          "description"="Employee ID"
      *      }
      *  },

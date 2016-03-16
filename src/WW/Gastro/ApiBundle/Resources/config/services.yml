@@ -8,3 +8,6 @@ services:
   bill.service:
     class: WW\Gastro\ApiBundle\Service\BillService
     arguments: [ @doctrine.orm.entity_manager ]
+  order.service:
+    class: WW\Gastro\ApiBundle\Service\BillOrderService
+    arguments: [ @doctrine.orm.entity_manager ]

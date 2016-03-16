@@ -21,74 +21,47 @@
 namespace WW\Gastro\ApiBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use FOS\RestBundle\Controller\Annotations\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class BillController extends FOSRestController
+/**
+ * Class BillOrderController
+ * @package WW\Gastro\ApiBundle\Controller
+ */
+class BillOrderController extends FOSRestController
 {
     /**
      * @View
      * @param $employeeId
+     * @param $billId
      * @return \Doctrine\Common\Collections\Collection
+     * @throws HttpException
      * @ApiDoc(
      *  resource=true,
-     *  description="Getting all the currently running Bills by Employer",
+     *  description="Getting all the current Orders from Bill, created by Employer",
      *  requirements={
      *      {
      *          "name"="employeeId",
      *          "dataType"="integer",
      *          "requirement"="true",
      *          "description"="Employee ID"
-     *      }
-     *  },
-     *     statusCodes={
-     *         200="Returned when successful",
-     *         404="Returned when the Employee does not exist"
-     *     }
-     * )
-     */
-    public function getBillsAction($employeeId)
-    {
-        $employee = $this->get('employee.service')->get($employeeId);
-
-        if (!$employee) {
-            throw new HttpException(404, "Employee not found");
-        }
-
-        return $this->view($employee->getBills());
-    }
-
-    /**
-     * @View
-     * @param $employeeId
-     * @param $billId
-     * @return \Doctrine\Common\Collections\Collection
-     * @ApiDoc(
-     *  resource=true,
-     *  description="Getting single Bill data",
-     *  requirements={
-     *      {
-     *          "name"="employeeId",
-     *          "dataType"="integer",
-     *          "requirement"="Integer",
-     *          "description"="Employee ID"
      *      },
      *      {
      *          "name"="billId",
      *          "dataType"="integer",
-     *          "requirement"="Integer",
-     *          "description"="Employee ID"
-     *      },
+     *          "requirement"="true",
+     *          "description"="Bill ID"
+     *      }
      *  },
      *     statusCodes={
      *         200="Returned when successful",
-     *         404="Returned when the Employee or Bill does not exist"
+     *         404="Returned when the Employee or Bill do not not exist"
      *     }
      * )
      */
-    public function getBillAction($employeeId, $billId)
+    public function getOrdersAction($employeeId, $billId)
     {
         $employee = $this->get('employee.service')->get($employeeId);
 
@@ -102,18 +75,19 @@ class BillController extends FOSRestController
             throw new HttpException(404, "Bill not found");
         }
 
-        return $this->view($bill);
+        return $this->view($bill->getOrders());
     }
 
     /**
      * @View
      * @param Request $request
      * @param         $employeeId
+     * @param         $billId
      * @return \Doctrine\Common\Collections\Collection
      * @internal param $billId
      * @ApiDoc(
      *  resource=true,
-     *  description="Adding new Bill",
+     *  description="Adding new Order to Bill",
      *  requirements={
      *      {
      *          "name"="employeeId",
@@ -121,28 +95,22 @@ class BillController extends FOSRestController
      *          "requirement"="true",
      *          "description"="Employee ID"
      *      },
-     *     {
-     *          "name"="start",
-     *          "dataType"="date",
-     *          "requirement"="false",
-     *          "description"="If omitted, current date will be used"
-     *     },
-     *     {
-     *          "name"="end",
-     *          "dataType"="date",
-     *          "requirement"="false",
-     *          "description"="Set to null. Will be autoset on closing the Bill"
-     *     }
+     *      {
+     *          "name"="billId",
+     *          "dataType"="integer",
+     *          "requirement"="true",
+     *          "description"="Bill ID"
+     *      }
      *
      *  },
-     * input="WW\Gastro\ApiBundle\Entity\Bill",
+     *      input="WW\Gastro\ApiBundle\Entity\BillOrder",
      *     statusCodes={
      *         200="Returned when successfully added",
-     *         404="Returned when the Employee does not exist"
+     *         404="Returned when the Employee or Bill do not not exist"
      *     }
      * )
      */
-    public function postBillAction(Request $request, $employeeId)
+    public function postOrderAction(Request $request, $employeeId, $billId)
     {
         $employee = $this->get('employee.service')->get($employeeId);
 
@@ -150,9 +118,15 @@ class BillController extends FOSRestController
             throw new HttpException(404, "Employee not found");
         }
 
-        $service = $this->get('bill.service');
+        $bill = $this->get('bill.service')->get($billId);
 
-        $service->setContext($employee)
+        if (!$bill) {
+            throw new HttpException(404, "Bill not found");
+        }
+
+        $service = $this->get('order.service');
+
+        $service->setContext($bill)
                 ->post($request->request->all());
 
         return $this->view(
@@ -167,27 +141,34 @@ class BillController extends FOSRestController
      * @View
      * @param Request $request
      * @param         $employeeId
+     * @param         $billId
      * @return \Doctrine\Common\Collections\Collection
      * @internal param $billId
      * @ApiDoc(
      *  resource=true,
-     *  description="Updating new Bill",
+     *  description="Updating Order in Bill",
      *  requirements={
      *      {
      *          "name"="employeeId",
      *          "dataType"="integer",
      *          "requirement"="true",
      *          "description"="Employee ID"
+     *      },
+     *      {
+     *          "name"="billId",
+     *          "dataType"="integer",
+     *          "requirement"="true",
+     *          "description"="Bill ID"
      *      }
      *  },
-     * input="WW\Gastro\ApiBundle\Entity\Bill",
+     * input="WW\Gastro\ApiBundle\Entity\BillOrder",
      *     statusCodes={
      *         200="Returned when successfully updated",
-     *         404="Returned when the Employee does not exist"
+     *         404="Returned when the Employee or Bill do not exist"
      *     }
      * )
      */
-    public function patchBillAction(Request $request, $employeeId)
+    public function patchOrderAction(Request $request, $employeeId, $billId)
     {
         $employee = $this->get('employee.service')->get($employeeId);
 
@@ -195,9 +176,15 @@ class BillController extends FOSRestController
             throw new HttpException(404, "Employee not found");
         }
 
-        $service = $this->get('bill.service');
+        $bill = $this->get('bill.service')->get($billId);
 
-        $service->setContext($employee)
+        if (!$bill) {
+            throw new HttpException(404, "Bill not found");
+        }
+
+        $service = $this->get('order.service');
+
+        $service->setContext($bill)
                 ->patch($request->request->all());
 
         return $this->view(
@@ -207,4 +194,5 @@ class BillController extends FOSRestController
             ]
         );
     }
+
 }
