@@ -18,15 +18,33 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 
-namespace WW\Gastro\ApiBundle\DependencyInjection;
+namespace WW\Gastro\DependencyInjection;
 
-use WW\Gastro\DependencyInjection\NoExtension;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * This is the class that loads and manages your bundle configuration
- *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
+ * Class NoExtension
+ * @package Gastro\DependencyInjection
+ * @codeCoverageIgnore
  */
-class ApiExtension extends NoExtension
+class NoExtension extends Extension
 {
+
+    /**
+     * {@inheritdoc}
+     */
+    public function load(array $configs, ContainerBuilder $container)
+    {
+        $configuration = new Configuration();
+        $this->processConfiguration($configuration, $configs);
+
+        $reflection = new \ReflectionClass($this);
+        $splFile    = new \SplFileInfo($reflection->getFileName());
+
+        $loader = new Loader\YamlFileLoader($container, new FileLocator($splFile->getPath() . '/../Resources/config'));
+        $loader->load('services.yml');
+    }
 }

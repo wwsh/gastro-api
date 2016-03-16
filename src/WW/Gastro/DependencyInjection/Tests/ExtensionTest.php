@@ -18,15 +18,36 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 
-namespace WW\Gastro\ApiBundle\DependencyInjection;
+namespace WW\Gastro\DependencyInjection\Tests;
 
+use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
+use WW\Gastro\ApiBundle\DependencyInjection\ApiExtension;
+use WW\Gastro\DependencyInjection\Configuration;
 use WW\Gastro\DependencyInjection\NoExtension;
 
 /**
- * This is the class that loads and manages your bundle configuration
- *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
+ * Class ExtensionTest
+ * @package Gastro\DependencyInjection\Tests
+ * @codeCoverageIgnore
  */
-class ApiExtension extends NoExtension
+class ExtensionTest extends AbstractExtensionTestCase
 {
+    /**
+     * {@inheritdoc}
+     * @return array
+     */
+    protected function getContainerExtensions()
+    {
+        return [
+            new ApiExtension(),
+        ];
+    }
+
+    /**
+     * If no Error means the test is Ok!
+     */
+    public function testLoadExtensions()
+    {
+        $this->load();
+    }
 }
