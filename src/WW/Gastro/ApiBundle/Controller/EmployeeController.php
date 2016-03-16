@@ -1,4 +1,22 @@
 <?php
+/*******************************************************************************
+ *  The MIT License (MIT)
+ *
+ * Copyright (c) 2016 WW Software House
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+ * Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
+ * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ ******************************************************************************/
 
 namespace WW\Gastro\ApiBundle\Controller;
 
@@ -17,19 +35,6 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
  */
 class EmployeeController extends FOSRestController
 {
-    /**
-     * @var EmployeeService
-     */
-    private $service;
-
-
-    /**
-     * EmployeeController constructor.
-     */
-    public function __construct()
-    {
-        $this->service = new EmployeeService();
-    }
 
 
     /**
@@ -55,10 +60,7 @@ class EmployeeController extends FOSRestController
      */
     public function getEmployeeAction($employeeId)
     {
-        $employee = $this
-            ->getDoctrine()
-            ->getRepository('ApiBundle:Employee')
-            ->find($employeeId);
+        $employee = $this->get('employee.service')->get($employeeId);
 
         if (!$employee) {
             throw new HttpException(404, 'Employee not found');
@@ -77,10 +79,7 @@ class EmployeeController extends FOSRestController
      */
     public function getEmployeesAction()
     {
-        $list = $this
-            ->getDoctrine()
-            ->getRepository('ApiBundle:Employee')
-            ->findAll();
+        $list = $this->get('employee.service')->getAll();
 
         return $this->view($list);
     }
@@ -92,7 +91,7 @@ class EmployeeController extends FOSRestController
      * @return \FOS\RestBundle\View\View
      * @internal param Employee $employee
      * @ApiDoc(
-     *  resource=true,
+     *  resource=false,
      *  description="Starting Employee's work",
      *  requirements={
      *      {
@@ -111,18 +110,21 @@ class EmployeeController extends FOSRestController
      */
     public function postEmployeeLoginAction($employeeId)
     {
-        $employee = $this->getEmployeeAction($employeeId);
+        $employee = $this->get('employee.service')->get($employeeId);
 
         if (!$employee) {
             throw new HttpException('Employee not found');
         }
 
-        $this->service->loginEmployee($employee);
-        $this->service->persist($this->getDoctrine()->getManager(), $employee);
+        $service = $this->get('employee.service');
+
+        $service->loginEmployee($employee);
 
         return $this->view(
-            $this->service->getMessage(),
-            $this->service->getCode()
+            [
+                'message' => $service->getMessage(),
+                'code'    => $service->getCode()
+            ]
         );
 
     }
@@ -132,14 +134,14 @@ class EmployeeController extends FOSRestController
      * @param $employeeId
      * @return \FOS\RestBundle\View\View
      * @ApiDoc(
-     *  resource=true,
+     *  resource=false,
      *  description="Ending Employee's work",
      *  requirements={
      *      {
      *          "name"="employeeId",
      *          "dataType"="integer",
      *          "requirement"="Integer",
-     *          "description"="ID of Employee to be work-closed"
+     *          "description"="ID of Employee to stop working shift"
      *      }
      *  },
      *     statusCodes={
@@ -151,18 +153,21 @@ class EmployeeController extends FOSRestController
      */
     public function postEmployeeLogoutAction($employeeId)
     {
-        $employee = $this->getEmployeeAction($employeeId);
+        $employee = $this->get('employee.service')->get($employeeId);
 
         if (!$employee) {
             throw new HttpException('Employee not found');
         }
 
-        $this->service->logoutEmployee($employee);
-        $this->service->persist($this->getDoctrine()->getManager(), $employee);
+        $service = $this->get('employee.service');
+
+        $service->logoutEmployee($employee);
 
         return $this->view(
-            $this->service->getMessage(),
-            $this->service->getCode()
+            [
+                'message' => $service->getMessage(),
+                'code'    => $service->getCode()
+            ]
         );
     }
 
@@ -194,10 +199,7 @@ class EmployeeController extends FOSRestController
 
         if ($pincode) {
 
-            $employee = $this
-                ->getDoctrine()
-                ->getRepository('ApiBundle:Employee')
-                ->findBy(['pincode' => $pincode]);
+            $employee = $this->get('employee.service')->getByPincode($pincode);
 
             if (!empty($employee)) {
                 return $this->view($employee);
@@ -205,5 +207,70 @@ class EmployeeController extends FOSRestController
         }
 
         throw new HttpException(404, "Employee not found");
+    }
+
+    /**
+     * @View
+     * @param Request $request
+     * @param         $employeeId
+     * @return \FOS\RestBundle\View\View
+     * @ApiDoc(
+     *  resource=true,
+     *  description="Update Employee data",
+     *      input="WW\Gastro\ApiBundle\Entity\Employee",
+     *  requirements={
+     *      {
+     *          "name"="id",
+     *          "dataType"="integer",
+     *          "requirement"="Integer",
+     *          "description"="Employee ID"
+     *      }
+     *  },
+     *     statusCodes={
+     *         200="Returned when update successful",
+     *         400="Returned if Employee not found"
+     *     }
+     * )
+     */
+    public function patchEmployeeAction(Request $request)
+    {
+        $service = $this->get('employee.service');
+
+        $service->patch($request->request->all());
+
+        return $this->view(
+            [
+                'message' => $service->getMessage(),
+                'code'    => $service->getCode()
+            ]
+        );
+    }
+
+    /**
+     * @View
+     * @param Request $request
+     * @param         $employeeId
+     * @return \FOS\RestBundle\View\View
+     * @ApiDoc(
+     *  resource=true,
+     *  description="Add Employee data",
+     *      input="WW\Gastro\ApiBundle\Entity\Employee",
+     *     statusCodes={
+     *         200="Returned when insert successful"
+     *     }
+     * )
+     */
+    public function postEmployeeAction(Request $request)
+    {
+        $service = $this->get('employee.service');
+
+        $service->post($request->request->all());
+
+        return $this->view(
+            [
+                'message' => $service->getMessage(),
+                'code'    => $service->getCode()
+            ]
+        );
     }
 }

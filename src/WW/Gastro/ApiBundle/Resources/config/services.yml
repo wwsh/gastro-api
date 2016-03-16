@@ -1,4 +1,10 @@
 services:
-    api.entity_manager:
-      class:  WW\Gastro\ApiBundle\Controller\EmployeeController
-      arguments: [ @doctrine.orm.entity_manager  ]
+  employee.service:
+    class: WW\Gastro\ApiBundle\Service\EmployeeService
+    arguments: [ @doctrine.orm.entity_manager ]
+  place.service:
+    class: WW\Gastro\ApiBundle\Service\PlaceService
+    arguments: [ @doctrine.orm.entity_manager ]
+  bill.service:
+    class: WW\Gastro\ApiBundle\Service\BillService
+    arguments: [ @doctrine.orm.entity_manager ]

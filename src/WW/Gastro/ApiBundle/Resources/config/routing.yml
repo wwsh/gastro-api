@@ -20,13 +20,11 @@ bill:
     parent:   employee
     name_prefix:  ge_api_
 
+place:
+    type:     rest
+    resource: WW\Gastro\ApiBundle\Controller\PlaceController
+    name_prefix:  ge_api_
 
-mefi_api_user_info:
-    path:   /user/info
-    defaults: { _controller: ApiBundle:User:info }
 
-mefi_api_user_logout:
-    path:   /user/logout
-    defaults: { _controller: ApiBundle:User:logout }
 
 
