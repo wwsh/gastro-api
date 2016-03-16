@@ -1,13 +1,13 @@
 services:
   employee.service:
     class: WW\Gastro\ApiBundle\Service\EmployeeService
-    arguments: [ @doctrine.orm.entity_manager ]
+    arguments: [ "@doctrine.orm.entity_manager" ]
   place.service:
     class: WW\Gastro\ApiBundle\Service\PlaceService
-    arguments: [ @doctrine.orm.entity_manager ]
+    arguments: [ "@doctrine.orm.entity_manager" ]
   bill.service:
     class: WW\Gastro\ApiBundle\Service\BillService
-    arguments: [ @doctrine.orm.entity_manager ]
+    arguments: [ "@doctrine.orm.entity_manager" ]
   order.service:
     class: WW\Gastro\ApiBundle\Service\BillOrderService
-    arguments: [ @doctrine.orm.entity_manager ]
+    arguments: [ "@doctrine.orm.entity_manager" ]
