@@ -1,0 +1,6 @@
+mefi_api_get_business:
+    path:     /{id}
+    defaults: { _controller: ApiBundle:Business:getBusiness }
+mefi_api_get_businesses:
+    path:     /
+    defaults: { _controller: ApiBundle:Business:getBusinesses }

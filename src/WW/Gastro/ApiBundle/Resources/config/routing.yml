@@ -1,0 +1,32 @@
+business:
+    type:     rest
+    resource: WW\Gastro\ApiBundle\Controller\BusinessController
+    name_prefix:  ge_api_
+
+employee:
+    type:     rest
+    resource: WW\Gastro\ApiBundle\Controller\EmployeeController
+    name_prefix:  ge_api_
+
+worktime:
+    type:     rest
+    resource: WW\Gastro\ApiBundle\Controller\WorkTimeController
+    parent:   employee
+    name_prefix:  ge_api_
+
+bill:
+    type:     rest
+    resource: WW\Gastro\ApiBundle\Controller\BillController
+    parent:   employee
+    name_prefix:  ge_api_
+
+
+mefi_api_user_info:
+    path:   /user/info
+    defaults: { _controller: ApiBundle:User:info }
+
+mefi_api_user_logout:
+    path:   /user/logout
+    defaults: { _controller: ApiBundle:User:logout }
+
+

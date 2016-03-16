@@ -1,0 +1,17 @@
+mefi_api_get_employee:
+    path:     /{id}
+    defaults: { _controller: ApiBundle:Employee:getEmployee }
+mefi_api_get_employee_controls:
+    path:     /{id}/controls
+    defaults: { _controller: ApiBundle:Employee:getEmployeeControls }
+mefi_api_post_employee_controls:
+    path:     /{id}/controls
+    method:   ['POST']
+    defaults: { _controller: ApiBundle:Employee:postEmployeeControls }
+mefi_api_get_employees:
+    path:     /
+    defaults: { _controller: ApiBundle:Employee:getEmployees }
+
+worktime:
+    resource: "worktime.yml"
+    type: rest

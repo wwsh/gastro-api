@@ -1,0 +1,4 @@
+services:
+    api.entity_manager:
+      class:  WW\Gastro\ApiBundle\Controller\EmployeeController
+      arguments: [ @doctrine.orm.entity_manager  ]
