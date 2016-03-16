@@ -25,7 +25,7 @@
     "doctrine/orm": "~2.5,>=2.2.3",
     "doctrine/mongodb": "1.2.*@dev",
     "doctrine/mongodb-odm": "1.0.*@dev",
-    "doctrine/mongodb-odm-bundle": "3.0.*@dev",
+    "doctrine/mongodb-odm-bundle": "dev-master",
     "twig/extensions": "~1.2",
     "sensio/distribution-bundle": "*",
     "sensio/framework-extra-bundle": "3.*",
