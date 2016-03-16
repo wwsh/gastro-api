@@ -1,11 +1,11 @@
 <?php
 
-namespace Gastro\ApiBundle\Controller;
+namespace WW\Gastro\ApiBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
-use Gastro\ApiBundle\Entity\Employee;
-use Gastro\ApiBundle\Service\Controls;
-use Gastro\ApiBundle\Service\EmployeeService;
+use WW\Gastro\ApiBundle\Entity\Employee;
+use WW\Gastro\ApiBundle\Service\Controls;
+use WW\Gastro\ApiBundle\Service\EmployeeService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use FOS\RestBundle\Controller\Annotations\View;
