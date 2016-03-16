@@ -19,9 +19,9 @@
   },
   "require": {
     "php": ">=5.4",
-    "symfony/symfony": "~2.6",
-    "symfony/monolog-bundle": "~2.7",
-    "doctrine/doctrine-bundle": "~1.4",
+    "symfony/symfony": ">=2.6",
+    "symfony/monolog-bundle": ">=2.7",
+    "doctrine/doctrine-bundle": ">=1.4",
     "doctrine/orm": "~2.5,>=2.2.3",
     "doctrine/mongodb": "1.2.*@dev",
     "doctrine/mongodb-odm": "1.0.*@dev",
