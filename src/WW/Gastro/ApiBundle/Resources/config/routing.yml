@@ -34,4 +34,4 @@ place:
 # Api Doc
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
-    prefix:   /api/doc
+    prefix:   /doc
