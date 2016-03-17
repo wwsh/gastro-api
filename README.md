@@ -55,7 +55,7 @@ Now it's time to include the routes in your routing.yml:
 
 You can customize your prefix, but I am recommending to use the standard one.
 
-Now the api should be set. To create the database schema and fill will example data, you can use:
+Now the api should be set. To create the database schema and fill with example data, you can use:
 
     php bin/console database:create
     php bin/console doctrine:schema:create
